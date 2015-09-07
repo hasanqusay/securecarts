@@ -1,0 +1,32 @@
+﻿@model SecureCarts.Models.TestNikeCom
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<form action='\Home\Index' method="post" >
+
+<label for="Url">Url:</label>
+@Html.EditorFor(m => m.Url)
+
+<input type="submit" value="Test Nike Site" />
+
+</form>
+
+<div class="col-sm-12">
+    
+    @if (Model.ResponseData != null)
+    {
+        <div class="col-sm-12">            
+            <pre>@Model.ResponseData.Content</pre>
+        </div>
+
+        <table>
+            @foreach (var m in Model.ResponseData.Headers) {             
+            <tr>
+                <th>@m.Key</th>
+                <td>@m.Value</td>
+            </tr>
+            }
+        </table>
+    }
+</div>
