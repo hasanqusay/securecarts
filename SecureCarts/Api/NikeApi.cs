@@ -26,8 +26,12 @@ namespace SecureCarts.Api
         
 
         public BaseApiResponse GetCartData(BaseApiResponse loginResponse)
-        {            
-            return DoGet(CartUrl, loginResponse.Headers);
+        {
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            
+            headers.Add("NikePlusId", loginResponse.Headers["NikePlusId"]);
+
+            return DoGet(CartUrl, headers, loginResponse.Cookies);
         }
     }
 }

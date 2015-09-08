@@ -3,30 +3,48 @@
     ViewBag.Title = "Home Page";
 }
 
-<form action='\Home\Index' method="post" >
+<div ng-app="secureCartsApp" ng-controller="secureCartController">
 
-<label for="Url">Url:</label>
-@Html.EditorFor(m => m.Url)
+    <form action='\Home\Index' method="post">
 
-<input type="submit" value="Test Nike Site" />
+        <label for="Url">Url:</label>
+        @Html.EditorFor(m => m.Url)
 
-</form>
+        <input type="submit" value="Test Nike Site" />
 
-<div class="col-sm-12">
+    </form>
     
-    @if (Model.ResponseData != null)
-    {
-        <div class="col-sm-12">            
-            <pre>@Model.ResponseData.Content</pre>
-        </div>
+    <label ng-bind="hello"></label>
+    
+    <div class="col-sm-12">
 
-        <table>
-            @foreach (var m in Model.ResponseData.Headers) {             
-            <tr>
-                <th>@m.Key</th>
-                <td>@m.Value</td>
-            </tr>
-            }
-        </table>
-    }
+        @if (Model.ResponseData != null)
+        {
+            <div class="col-sm-12">
+                <pre>@Model.ResponseData.Content</pre>
+            </div>
+
+            <table>
+                @foreach (var m in Model.ResponseData.Headers)
+                {
+                    <tr>
+                        <th>@m.Key</th>
+                        <td>@m.Value</td>
+                    </tr>
+                }
+                @foreach (var m in Model.ResponseData.Cookies)
+                {
+                    <tr>
+                        <th>Cookie *</th>
+                        <td>@m.ToString()</td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+
 </div>
+
+@section scripts{    
+    @Scripts.Render("~/bundles/secureCartAppJs")    
+}

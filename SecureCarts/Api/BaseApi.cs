@@ -12,6 +12,8 @@ namespace SecureCarts.Api
         public BaseApiResponse()
         {
             Headers = new Dictionary<string, string>();
+
+            Cookies = new CookieCollection();
         }
 
         public Dictionary<string, string> Headers { get; set; }
@@ -23,7 +25,7 @@ namespace SecureCarts.Api
 
     public class BaseApi
     {
-        public BaseApiResponse DoGet(string url, Dictionary<string, string> headers)
+        public BaseApiResponse DoGet(string url, Dictionary<string, string> headers, CookieCollection cookies)
         {
             BaseApiResponse bAR = new BaseApiResponse();
 
@@ -33,8 +35,14 @@ namespace SecureCarts.Api
 
             request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
 
-            //request.CookieContainer.Add(new Cookie());
-            request.Headers["Set-Cookie"] = headers["Set-Cookie"];
+            //setting up custom headers
+            foreach (var h in headers)
+                request.Headers[h.Key] = h.Value;
+
+            //setting up custom cookies
+            request.CookieContainer = new CookieContainer();
+            foreach (Cookie c in cookies)
+                request.CookieContainer.Add(c);
 
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
@@ -92,6 +100,15 @@ namespace SecureCarts.Api
             foreach (Cookie c in response.Cookies)            
                 bAR.Cookies.Add(c);
 
+            if (bAR.Headers.ContainsKey("Set-Cookie") && !String.IsNullOrEmpty(bAR.Headers["Set-Cookie"]))
+            {
+                var cc = CookieHelper.GetAllCookiesFromHeader(bAR.Headers["Set-Cookie"], "");
+
+                foreach (Cookie c in cc)
+                    bAR.Cookies.Add(c);
+            }
+                
+
             // Get the stream containing content returned by the server.
             Stream dataStream = response.GetResponseStream();
 
@@ -110,4 +127,6 @@ namespace SecureCarts.Api
             return bAR;
         }
     }
+
+
 }

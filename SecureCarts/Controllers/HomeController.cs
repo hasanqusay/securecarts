@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -37,7 +38,7 @@ namespace SecureCarts.Controllers
             {
                 m.ResponseData = nike.Login("fehimdervisbegovic@gmail.com","qwERasDF12#");
 
-                //m.ResponseData = nike.GetCartData(m.ResponseData);
+                m.ResponseData = nike.GetCartData(m.ResponseData);
             }
             catch (WebException we)
             {

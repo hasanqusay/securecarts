@@ -23,6 +23,17 @@ namespace SecureCarts
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            //angular logic 
+            bundles.Add(new ScriptBundle("~/bundles/secureCartAppJs").Include(
+                "~/Scripts/angular.min.js",
+                "~/Scripts/angular-sanitize.min.js",
+                "~/Scripts/ui-bootstrap-tpls-0.13.4.min.js",
+                "~/Scripts/angular/secureCartApp.js",
+                "~/Scripts/angular/secureCartService.js",
+                "~/Scripts/angular/secureCartController.js"
+                ));
+
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
