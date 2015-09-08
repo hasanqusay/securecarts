@@ -3,47 +3,103 @@
     ViewBag.Title = "Home Page";
 }
 
-<div ng-app="secureCartsApp" ng-controller="secureCartController">
+<div ng-app="secureCartsApp" >
+    <div class="row" ng-controller="secureCartController">
+        <div class="col-sm-6">
 
-    <form action='\Home\Index' method="post">
+            <div class="row">
+                <div class="col-md-12">
+                    sneakerknockerz2015@gmail.com / 3124681122Ha
+                </div>
+            </div>
 
-        <label for="Url">Url:</label>
-        @Html.EditorFor(m => m.Url)
 
-        <input type="submit" value="Test Nike Site" />
+            <div class="row">
+                <form action='\Home\Index' method="post">
+                    <div class="form-group">
+                        <label for="Url" class="control-label col-sm-4">Url:</label>
+                        <div class="col-sm-8">
+                            @Html.EditorFor(m => m.Url, new { htmlAttributes = new { @class = "form-control", @placeholder = "NikeUrl" } })
+                        </div>
+                    </div>
 
-    </form>
+                    <div class="form-group">
+                        <label for="NikeUserName" class="control-label col-sm-4">Nike username:</label>
+                        <div class="col-sm-8">
+                            @Html.EditorFor(m => m.NikeUserName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nike Username" } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="NikePassword" class="control-label col-sm-4">Nike Password:</label>
+                        <div class="col-sm-8">
+                            @Html.EditorFor(m => m.NikePassword, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nike Password" } })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Test Nike Site" class="btn btn-default" />
+
+                    </div>
+                    
+
+                </form>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    @Html.Raw(Model.TheData)
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+
+            @if (Model.ResponseData != null)
+                    {
+
+                <h2>Response</h2>
+                <table>
+                    @foreach (var m in Model.ResponseData.Headers)
+                            {
+                        <tr>
+                            <th>@m.Key</th>
+                            <td>@m.Value</td>
+                        </tr>
+                            }
+                    @foreach (var m in Model.ResponseData.Cookies)
+                            {
+                        <tr>
+                            <th>Cookie *</th>
+                            <td>@m.ToString()</td>
+                        </tr>
+                            }
+                </table>
+
+                <h2>Request</h2>
+                <table>
+                    @foreach (var m in Model.ResponseData.RequestHeaders)
+                    {
+                        <tr>
+                            <th>@m.Key</th>
+                            <td>@m.Value</td>
+                        </tr>
+                    }
+                    @foreach (var m in Model.ResponseData.RequestCookies)
+                    {
+                        <tr>
+                            <th>Cookie *</th>
+                            <td>@m.ToString()</td>
+                        </tr>
+                    }
+                </table>
+
+                <div class="col-sm-12" style="height:300px; overflow:auto; ">
+                    <pre>@Model.ResponseData.Content</pre>
+                </div>
+             }
+        </div>
+    </div>
     
-    <div class="col-sm-12">
 
-        @if (Model.ResponseData != null)
-        {
-            
-
-            <table>
-                @foreach (var m in Model.ResponseData.Headers)
-                {
-                    <tr>
-                        <th>@m.Key</th>
-                        <td>@m.Value</td>
-                    </tr>
-                }
-                @foreach (var m in Model.ResponseData.Cookies)
-                {
-                    <tr>
-                        <th>Cookie *</th>
-                        <td>@m.ToString()</td>
-                    </tr>
-                }
-            </table>
-
-
-
-    <div class="col-sm-12" style="height:300px; overflow:auto; ">
-        <pre>@Model.ResponseData.Content</pre>
-    </div>
-        }
-    </div>
 
 </div>
 

@@ -10,17 +10,8 @@ namespace SecureCarts.Api
     {
         public readonly string LoginUrl = "https://www.nike.com/profile/login?Content-Locale=en_US";
 
-        public readonly string CartUrl = "https://secure-store.nike.com/us/checkout/html/cart.jsp";
-
-        public readonly string HomeUrl = "http://www.nike.com/us/en_us/";
-
-        public BaseApiResponse Init()
-        {            
-            var cc = CookieHelper.GetAllCookiesFromHeader("", "");
-
-            return DoGet(HomeUrl, null, cc);
-        }
-
+        public readonly string CartUrl = "https://secure-store.nike.com/us/checkout/html/cart.jsp?Country=US";
+       
         public BaseApiResponse Login(string username, string password)
         {
             var data = new Dictionary<string, string>();
@@ -33,15 +24,24 @@ namespace SecureCarts.Api
             
             return DoPost(LoginUrl, data);
         }
-        
 
-        public BaseApiResponse GetCartData(BaseApiResponse loginResponse)
+
+        public BaseApiResponse GetCartData(string username, string password)
         {
-            Dictionary<string, string> headers = new Dictionary<string, string>();
-            
-            headers.Add("NikePlusId", loginResponse.Headers["NikePlusId"]);
+            var l = Login(username, password);
 
-            return DoGet(CartUrl, headers, loginResponse.Cookies);
+            var cc = new CookieCollection();
+
+            cc.Add(new Cookie("CONSUMERCHOICE", "us/en_us", "/", "nike.com"));
+            cc.Add(new Cookie("NIKE_COMMERCE_COUNTRY", "US", "/", "nike.com"));
+            cc.Add(new Cookie("NIKE_COMMERCE_LANG_LOCALE", "en_US", "/", "nike.com"));
+            cc.Add(new Cookie("nike_locale", "us/en_us", "/", "nike.com"));
+
+            var hc = CookieHelper.GetAllCookiesFromHeader(l.Headers["Set-Cookie"], "nike.com");
+
+            cc.Add(hc);
+
+            return DoGet(CartUrl, null, cc);
         }
     }
 }

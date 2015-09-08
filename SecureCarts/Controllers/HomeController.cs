@@ -1,4 +1,5 @@
-﻿using SecureCarts.Api;
+﻿using HtmlAgilityPack;
+using SecureCarts.Api;
 using SecureCarts.Models;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,8 @@ namespace SecureCarts.Controllers
         public ActionResult Index()
         {
             var m = new TestNikeCom() { 
-            TheData="Some čadkf alskjfd asljd čslakjf dčlkasj fčlajsdčflkajčflajfčklaj čfklja čfkja čfkljs fephpq98f pq98wefwiufls",
+            TheData="",
+            NikeUserName = "fehimdervisbegovic@gmail.com",
             Url = "http://www.nike.com/us/en_us" //"http://store.nike.com/us/en_us/pw/jordan-shoes/brkZc8d?ipp=120"
             };
             return View(m);
@@ -36,9 +38,26 @@ namespace SecureCarts.Controllers
 
             try
             {
-                //m.ResponseData = nike.Login("fehimdervisbegovic@gmail.com","qwERasDF12#");
+                m.ResponseData = nike.GetCartData(formData.NikeUserName, formData.NikePassword);
 
-                m.ResponseData = nike.Init();
+                HtmlDocument doc = new HtmlDocument();
+                doc.LoadHtml(m.ResponseData.Content);
+
+                foreach (HtmlNode n in doc.DocumentNode.SelectNodes("//div[contains(@class, 'ch4_cartItemActions')]"))
+                    n.Remove();
+
+                foreach (HtmlNode n in doc.DocumentNode.SelectNodes("//div[contains(@class, 'ch4_cartItem')]"))
+                {
+                    if (n.Attributes.Contains("data-qa-product-id"))
+                    {
+                        m.TheData += n.OuterHtml;
+                        //ch4_cartItemActions
+                    }
+                    
+                    
+                    
+                }
+
             }
             catch (WebException we)
             {

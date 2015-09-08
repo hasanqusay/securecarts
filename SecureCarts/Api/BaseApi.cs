@@ -14,11 +14,20 @@ namespace SecureCarts.Api
             Headers = new Dictionary<string, string>();
 
             Cookies = new CookieCollection();
+
+            RequestHeaders = new Dictionary<string, string>();
+
+            RequestCookies = new CookieCollection();
         }
 
         public Dictionary<string, string> Headers { get; set; }
         
         public CookieCollection Cookies { get; set; }
+
+        public Dictionary<string, string> RequestHeaders { get; set; }
+
+        public CookieCollection RequestCookies { get; set; }
+
 
         public string Content { get; set; }
     }
@@ -39,7 +48,13 @@ namespace SecureCarts.Api
             if (headers != null)
             {
                 foreach (var h in headers)
-                    request.Headers[h.Key] = h.Value;
+                    try
+                    {
+                        request.Headers[h.Key] = h.Value;
+                    }
+                    catch //(Exception ex)
+                    {
+                    }
             }
 
             //setting up custom cookies
@@ -67,6 +82,14 @@ namespace SecureCarts.Api
                 foreach (Cookie c in cc)
                     bAR.Cookies.Add(c);
             }
+
+            //request headers
+            foreach (var h in request.Headers.AllKeys)
+                bAR.RequestHeaders.Add(h, request.Headers[h]);
+
+            //request cookies
+            //foreach (Cookie c in request.CookieContainer.GetCookies(new Uri("nike.com")))
+            //    bAR.RequestCookies.Add(c);
 
             Stream dataStream = response.GetResponseStream();
 

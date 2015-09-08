@@ -11,6 +11,10 @@ namespace SecureCarts.Models
         public string Url { get; set; }
         public string TheData { get; set; }
 
+        public string NikeUserName { get; set; }
+
+        public string NikePassword { get; set; }
+
         public BaseApiResponse ResponseData { get; set; }
     }
 }
