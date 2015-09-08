@@ -14,15 +14,11 @@
 
     </form>
     
-    <label ng-bind="hello"></label>
-    
     <div class="col-sm-12">
 
         @if (Model.ResponseData != null)
         {
-            <div class="col-sm-12">
-                <pre>@Model.ResponseData.Content</pre>
-            </div>
+            
 
             <table>
                 @foreach (var m in Model.ResponseData.Headers)
@@ -40,6 +36,12 @@
                     </tr>
                 }
             </table>
+
+
+
+    <div class="col-sm-12" style="height:300px; overflow:auto; ">
+        <pre>@Model.ResponseData.Content</pre>
+    </div>
         }
     </div>
 

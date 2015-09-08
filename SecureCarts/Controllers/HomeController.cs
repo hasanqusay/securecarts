@@ -36,9 +36,9 @@ namespace SecureCarts.Controllers
 
             try
             {
-                m.ResponseData = nike.Login("fehimdervisbegovic@gmail.com","qwERasDF12#");
+                //m.ResponseData = nike.Login("fehimdervisbegovic@gmail.com","qwERasDF12#");
 
-                m.ResponseData = nike.GetCartData(m.ResponseData);
+                m.ResponseData = nike.Init();
             }
             catch (WebException we)
             {

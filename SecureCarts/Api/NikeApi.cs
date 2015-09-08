@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 
 namespace SecureCarts.Api
@@ -10,6 +11,15 @@ namespace SecureCarts.Api
         public readonly string LoginUrl = "https://www.nike.com/profile/login?Content-Locale=en_US";
 
         public readonly string CartUrl = "https://secure-store.nike.com/us/checkout/html/cart.jsp";
+
+        public readonly string HomeUrl = "http://www.nike.com/us/en_us/";
+
+        public BaseApiResponse Init()
+        {            
+            var cc = CookieHelper.GetAllCookiesFromHeader("", "");
+
+            return DoGet(HomeUrl, null, cc);
+        }
 
         public BaseApiResponse Login(string username, string password)
         {
